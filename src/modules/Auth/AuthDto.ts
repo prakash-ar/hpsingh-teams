@@ -10,12 +10,13 @@ export class AuthResponseDTO {
   user: UserDto;
   accessToken: string;
   errorCode?: string;
+  message?: string
 }
 
 export class RegisterUserDTO {
   @IsString()
   @ApiProperty()
-  email: string;
+  username: string;
 
   @IsString()
   @ApiProperty()
@@ -30,8 +31,7 @@ export class LoginUserDTO {
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
-  @IsEmail({}, { message: INVALID_EMAIL })
-  email: string;
+  username: string;
 
   @IsString()
   @IsNotEmpty()

@@ -8,32 +8,43 @@ import { LoggerMiddleware } from '@middleware/logger.middleware';
 import { UserModule } from '@module/User/UserModule';
 import { RoleModule } from '@module/Role/RoleModule';
 import { AuthModule } from '@module/Auth/AuthModule';
-import { Category } from '@model/CategoryModel';
-import { Color } from '@model/ColorModel';
-import { Size } from '@model/SizeModel';
-import { Product } from '@model/ProductModel';
-import { Attribute } from '@model/AttributeModel';
-import { ProductColor } from '@model/ProductColorModel';
-import { ProductSize } from '@model/ProductsSizeModel'
+import { Role } from '@model/RoleModel';
+import { User } from '@model/UserModel';
+import { UserRole } from '@model/UserRoleModel';
+import { RolesGuard } from '@module/Auth/RoleGuard';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from '@module/Auth/AuthGuard';
+
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, load: [() => GLOBAL_CONFIG] }),
     SequelizeModule.forRoot({
       dialect: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'root',
-      database: 'test',
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT),
+      username: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
       autoLoadModels: true,
       synchronize: true,
-      models: [Category, Attribute, Product, Color, Size, ProductColor, ProductSize]
+      models: [User, Role, UserRole]
     }),
-    LoggerModule,
-    UserModule,
+    AuthModule,
     RoleModule,
-    AuthModule
+    UserModule,
+    LoggerModule
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard, // Set AuthGuard as a global guard
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard, // Set AuthGuard as a global guard
+    },
+    // You can still provide RolesGuard as a regular provider
   ],
   exports: [],
 })

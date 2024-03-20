@@ -19,4 +19,4 @@ import { User } from '@model/UserModel';
   providers: [UserService, AuthService, JwtStrategy],
   controllers: [AuthController],
 })
-export class AuthModule {}
+export class AuthModule { }

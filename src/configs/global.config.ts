@@ -11,9 +11,9 @@ export const GLOBAL_CONFIG: Config = {
   },
   swagger: {
     enabled: true,
-    title: 'Nestjs Prisma Starter',
-    description: 'The nestjs API description',
-    version: '1.5',
+    title: 'Hpsingh Teams api',
+    description: '',
+    version: '1.0',
     path: API_PREFIX,
   },
   security: {

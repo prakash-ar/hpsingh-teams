@@ -4,15 +4,15 @@ require('dotenv').config();
 export const JWT_SECRET = process.env.JWT_SIGNATURE;
 export const JWT_EXPIRY_SECONDS = 3600;
 
-export enum ROLES_ENUM {
-  ADMIN = 'admin',
-  USER = 'user',
-}
 
-export const ROLES = {
-  ADMIN: 'admin',
-  USER: 'user',
-};
+
+export enum Role {
+  Admin = 'admin',
+  User = 'user',
+  Sales = 'sales',
+  Billing = 'billing',
+  Supervisor = 'supervisor'
+}
 export const DEFAULT_PAGE_LIMIT = 10;
 export const MAX_PAGE_LIMIT = 100;
 
@@ -27,5 +27,5 @@ export const SLUG_SEPARATOR = '-';
 
 
 /* Model Select Attributes */
-export const USER_ATTRIBUTES = ["id","firstName","lastName","mobile","email","isActive","roleId"]
-export const ROLE_ATTRIBUTES = ["id","name"]
+export const USER_ATTRIBUTES = ["id", "firstName", "lastName", "mobile", "email", "isActive", "isMobileAccessOnly"]
+export const ROLE_ATTRIBUTES = ["id", "name"]

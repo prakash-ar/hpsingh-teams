@@ -1,5 +1,6 @@
-import { DataType, Column, CreatedAt, HasMany, Model, Table, UpdatedAt } from 'sequelize-typescript';
+import { DataType, Column, CreatedAt, HasMany, Model, Table, UpdatedAt, BelongsToMany } from 'sequelize-typescript';
 import { User } from './UserModel';
+import { UserRole } from './UserRoleModel';
 
 const { BIGINT } = DataType;
 @Table({ timestamps: true })
@@ -15,12 +16,14 @@ export class Role extends Model {
   @Column
   name: string;
 
-  @HasMany(() => User, 'roleId')
-  users: User[]
-
   @CreatedAt
   createdAt: Date;
 
   @UpdatedAt
   updatedAt: Date;
+
+  @BelongsToMany(() => User, {
+    through: { model: () => UserRole },
+  })
+  user: User[]
 }

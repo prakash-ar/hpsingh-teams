@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsBoolean, IsEmail, IsInt, IsNotEmpty, IsString, Max, Min } from "class-validator";
+import { Transform } from "class-transformer";
+import { IsArray, IsBoolean, IsEmail, IsInt, IsNotEmpty, IsOptional, IsString, Max, Min } from "class-validator";
 import { INVALID_EMAIL } from "src/shared/constants/strings";
 
 export class UserUpdateDto {
@@ -28,8 +29,17 @@ export class UserUpdateDto {
   @ApiProperty()
   @IsBoolean()
   isActive?: boolean;
- 
+
+  @IsArray()
+  @IsOptional()
+  @ApiProperty({ required: false })
+  @Transform(({ value }) => { return value ? JSON.parse(value) : [] })
+  userRoles: CreateUserRoles[]
+}
+
+class CreateUserRoles {
+  @IsString()
+  @IsNotEmpty()
   @ApiProperty()
-  @IsInt()
-  roleId?:number
+  roleId: string
 }

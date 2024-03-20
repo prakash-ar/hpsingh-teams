@@ -35,7 +35,7 @@ async function bootstrap() {
 
   app.use(cookieParser());
 
-  app.useGlobalPipes(new ValidationPipe({whitelist: true,transform: true,}));
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true, }));
 
   const configService = app.get<ConfigService>(ConfigService);
   const swaggerConfig = configService.get<SwaggerConfig>('swagger');
@@ -44,9 +44,19 @@ async function bootstrap() {
   if (swaggerConfig.enabled) {
     const options = new DocumentBuilder()
       .setTitle(swaggerConfig.title || 'Nestjs')
-      .setDescription(swaggerConfig.description || 'The nestjs API description')
+      .setDescription(swaggerConfig.description || '')
       .setVersion(swaggerConfig.version || '1.0')
-      .addBearerAuth()
+      .addBearerAuth(
+        {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+          name: 'JWT',
+          description: 'Enter JWT token',
+          in: 'header',
+        },
+        'JWT-auth', // This name here is important for matching up with @ApiBearerAuth() in your controller!
+      )
       .build();
     const document = SwaggerModule.createDocument(app, options);
 
