@@ -11,7 +11,8 @@ export enum Role {
   User = 'user',
   Sales = 'sales',
   Billing = 'billing',
-  Supervisor = 'supervisor'
+  Supervisor = 'supervisor',
+  SuperAdmin = 'super-admin'
 }
 export const DEFAULT_PAGE_LIMIT = 10;
 export const MAX_PAGE_LIMIT = 100;
