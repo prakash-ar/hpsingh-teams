@@ -130,7 +130,7 @@ export class UserService {
     if (user.userOtp.otp !== reqData.otp) {
       throw new NotAcceptableException('Otp does not match!');
     }
-    // UserOtp.destroy({ where: { userId: user.id } })
+    UserOtp.destroy({ where: { userId: user.id } })
     return user
 
   }
