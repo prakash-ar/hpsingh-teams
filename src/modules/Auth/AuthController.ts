@@ -3,7 +3,7 @@ import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JWT_EXPIRY_SECONDS } from '@shared/constants/global.constants';
 
 import { AuthService } from './AuthService';
-import { AuthResponseDTO, LoginUserDTO, RegisterUserDTO } from './AuthDto';
+import { AuthResponseDTO, GenetateOtpDto, LoginUserDTO, OtpResponseDto, RegisterUserDTO, ValidateOtpDto, ValidateOtpResponseDto } from './AuthDto';
 import { GLOBAL_CONFIG } from 'src/configs/global.config';
 import { SkipAuthGuard } from './SkipAuthDecorator';
 
@@ -25,15 +25,29 @@ export class AuthController {
     return res.status(200).send({ ...loginData, expires });
   }
 
-  // @Post('register')
-  // async register(@Body() user: RegisterUserDTO): Promise<User> {
-  //   return this.authService.register(user);
-  // }
-
   @SkipAuthGuard()
   @Post('logout')
   logout(@Response() res): void {
     res.clearCookie('accessToken');
     res.status(200).send({ success: true });
+  }
+
+
+  @SkipAuthGuard()
+  @Post('generate-otp')
+  @ApiOperation({ description: 'Login user' })
+  @ApiBody({ type: GenetateOtpDto })
+  async genetareOtp(@Body() user: GenetateOtpDto, @Response() res): Promise<OtpResponseDto> {
+    const otpData = await this.authService.generateOtp(user);
+    return res.status(200).send(otpData);
+  }
+
+  @SkipAuthGuard()
+  @Post('validate-otp')
+  @ApiOperation({ description: 'Login user' })
+  @ApiBody({ type: ValidateOtpDto })
+  async ValidateOtp(@Body() user: ValidateOtpDto, @Response() res): Promise<ValidateOtpResponseDto> {
+    const otpData = await this.authService.validateOtp(user);
+    return res.status(200).send(otpData);
   }
 }

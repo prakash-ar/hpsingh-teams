@@ -5,7 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import { AuthHelpers } from '@shared/helpers/auth.helpers';
 import { GLOBAL_CONFIG } from '../../configs/global.config';
 
-import { AuthResponseDTO, LoginUserDTO, RegisterUserDTO } from './AuthDto';
+import { AuthResponseDTO, GenetateOtpDto, LoginUserDTO, OtpResponseDto, RegisterUserDTO, ValidateOtpDto } from './AuthDto';
 import { User } from '@model/UserModel';
 import { UserService } from '@module/User/UserService';
 import { PASSWORD_MISMATCH, USER_NOT_AUTHORIZED, USER_NOT_FOUND } from './AuthConstants';
@@ -75,4 +75,39 @@ export class AuthService {
     };
   }
 
+  public async generateOtp(genetateOtpDto: GenetateOtpDto): Promise<OtpResponseDto> {
+    return this.userService.generateOtp(genetateOtpDto.phone)
+
+  }
+
+  public async validateOtp(user: ValidateOtpDto): Promise<any> {
+    const userData = await this.userService.validateOtp(user)
+
+    const roles = []
+    if (userData.roles) {
+      for (const rolesInfo of userData.roles) {
+        roles.push(rolesInfo.dataValues.name)
+      }
+    }
+
+    const payload = {
+      id: userData.id,
+      email: userData.email,
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      mobile: userData.mobile,
+      isActive: userData.isActive,
+      isMobileAccessOnly: userData.isMobileAccessOnly,
+      roles: roles
+    };
+
+    const accessToken = this.jwtService.sign(payload, {
+      expiresIn: GLOBAL_CONFIG.security.expiresIn,
+    });
+
+    return {
+      user: payload,
+      accessToken: accessToken,
+    };
+  }
 }

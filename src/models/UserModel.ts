@@ -1,8 +1,9 @@
-import { BeforeCreate, BeforeUpdate, BelongsTo, BelongsToMany, Column, CreatedAt, DataType, ForeignKey, HasMany, IsUUID, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
+import { BeforeCreate, BeforeUpdate, BelongsTo, BelongsToMany, Column, CreatedAt, DataType, ForeignKey, HasMany, HasOne, IsUUID, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
 import { Role } from './RoleModel';
 
 import { AuthHelpers } from '@shared/helpers/auth.helpers';
 import { UserRole } from './UserRoleModel';
+import { UserOtp } from './UserOtpModel';
 
 const { BIGINT } = DataType;
 @Table({
@@ -43,6 +44,11 @@ export class User extends Model {
   @UpdatedAt
   updatedAt: Date;
 
+  @HasOne(() => UserOtp, {
+    foreignKey: { name: 'userId' },
+    onDelete: 'CASCADE',
+  })
+  userOtp: UserOtp
 
   @HasMany(() => UserRole, {
     foreignKey: { name: 'userId' },
@@ -55,6 +61,7 @@ export class User extends Model {
     through: { model: () => UserRole },
   })
   roles: Role[]
+  user: { otp: number; expireIn: string; };
 
 
   @BeforeCreate

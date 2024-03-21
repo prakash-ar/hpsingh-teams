@@ -10,7 +10,6 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const skipAuth = this.reflector.get<boolean>("skip-auth", context.getHandler());
-    console.log(skipAuth)
     if (skipAuth) {
       return true; // Skip authentication for methods with @SkipAuthGuard() decorator
     }

@@ -14,6 +14,7 @@ import { UserRole } from '@model/UserRoleModel';
 import { RolesGuard } from '@module/Auth/RoleGuard';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from '@module/Auth/AuthGuard';
+import { UserOtp } from '@model/UserOtpModel';
 
 
 @Module({
@@ -28,7 +29,7 @@ import { AuthGuard } from '@module/Auth/AuthGuard';
       database: process.env.DB_NAME,
       autoLoadModels: true,
       synchronize: true,
-      models: [User, Role, UserRole]
+      models: [User, Role, UserRole, UserOtp]
     }),
     AuthModule,
     RoleModule,
