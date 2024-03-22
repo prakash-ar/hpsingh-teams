@@ -48,12 +48,17 @@ export class AuthService {
       };
     }
     let roles = []
+    const business = []
     if (userData.roles) {
       for (const rolesInfo of userData.roles) {
         roles.push(rolesInfo.dataValues.name)
       }
     }
-
+    if (userData.business !== null) {
+      for (const businessInfo of userData.business) {
+        business.push(businessInfo.dataValues.id)
+      }
+    }
     const payload = {
       id: userData.id,
       email: userData.email,
@@ -62,7 +67,8 @@ export class AuthService {
       mobile: userData.mobile,
       isActive: userData.isActive,
       isMobileAccessOnly: userData.isMobileAccessOnly,
-      roles: roles
+      roles: roles,
+      business
     };
 
     const accessToken = this.jwtService.sign(payload, {
@@ -84,12 +90,18 @@ export class AuthService {
     const userData = await this.userService.validateOtp(user)
 
     const roles = []
+    const business = []
+
     if (userData.roles) {
       for (const rolesInfo of userData.roles) {
         roles.push(rolesInfo.dataValues.name)
       }
     }
-
+    if (userData.business !== null) {
+      for (const businessInfo of userData.business) {
+        business.push(businessInfo.dataValues.id)
+      }
+    }
     const payload = {
       id: userData.id,
       email: userData.email,
@@ -98,7 +110,8 @@ export class AuthService {
       mobile: userData.mobile,
       isActive: userData.isActive,
       isMobileAccessOnly: userData.isMobileAccessOnly,
-      roles: roles
+      roles: roles,
+      business
     };
 
     const accessToken = this.jwtService.sign(payload, {

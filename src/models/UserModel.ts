@@ -4,6 +4,9 @@ import { Role } from './RoleModel';
 import { AuthHelpers } from '@shared/helpers/auth.helpers';
 import { UserRole } from './UserRoleModel';
 import { UserOtp } from './UserOtpModel';
+import { UserBusiness } from './UserBusinessModel';
+import { Business } from './BusinessModel';
+import { Audit } from './AuditModel';
 
 const { BIGINT } = DataType;
 @Table({
@@ -56,13 +59,29 @@ export class User extends Model {
   })
   userRoles: UserRole[]
 
+  @HasMany(() => Audit, {
+    foreignKey: { name: 'userId' },
+    onDelete: 'CASCADE',
+  })
+  audit: Audit[]
+
+  @HasMany(() => UserBusiness, {
+    foreignKey: { name: 'userId' },
+    onDelete: 'CASCADE',
+  })
+  userBusiness: UserBusiness[]
+
 
   @BelongsToMany(() => Role, {
     through: { model: () => UserRole },
   })
   roles: Role[]
-  user: { otp: number; expireIn: string; };
 
+
+  @BelongsToMany(() => Business, {
+    through: { model: () => UserBusiness },
+  })
+  business: Business[]
 
   @BeforeCreate
   @BeforeUpdate

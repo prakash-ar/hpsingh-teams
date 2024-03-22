@@ -43,10 +43,16 @@ export class UserCreateDto {
   isMobileAccessOnly: boolean;
 
   @IsArray()
-  @IsOptional()
+  @IsNotEmpty()
   @ApiProperty({ required: false })
   @Transform(({ value }) => { return value; })
   userRoles: CreateUserRoles[]
+
+  @IsArray()
+  @IsNotEmpty()
+  @ApiProperty({ required: false })
+  @Transform(({ value }) => { return value; })
+  userBusiness: CreateUserBusiness[]
 }
 
 class CreateUserRoles {
@@ -54,4 +60,11 @@ class CreateUserRoles {
   @IsNotEmpty()
   @ApiProperty()
   roleId: number
+}
+
+class CreateUserBusiness {
+  @IsInt()
+  @IsNotEmpty()
+  @ApiProperty()
+  businessId: number
 }

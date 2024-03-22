@@ -5,41 +5,66 @@ import { INVALID_EMAIL } from "src/shared/constants/strings";
 
 export class UserUpdateDto {
   @IsString()
+  @IsNotEmpty()
   @ApiProperty()
   @IsEmail({}, { message: INVALID_EMAIL })
-  email?: string;
+  email: string;
 
-  @IsString()
-  @ApiProperty()
-  password?: string;
-
-  @IsString()
-  @ApiProperty()
-  firstName?: string;
-
-  @IsString()
-  @ApiProperty()
-  lastName?: string;
-
-  @IsInt()
-  @ApiProperty()
-  @Min(10)
-  mobile?: number
-
-  @ApiProperty()
-  @IsBoolean()
-  isActive?: boolean;
-
-  @IsArray()
-  @IsOptional()
-  @ApiProperty({ required: false })
-  @Transform(({ value }) => { return value ? JSON.parse(value) : [] })
-  userRoles: CreateUserRoles[]
-}
-
-class CreateUserRoles {
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
-  roleId: string
+  password: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  firstName: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  lastName: string;
+
+  @IsInt()
+  @IsNotEmpty()
+  @ApiProperty()
+  @Min(10)
+  mobile: number
+
+
+  @IsNotEmpty()
+  @ApiProperty()
+  @IsBoolean()
+  isActive: boolean;
+
+  @IsNotEmpty()
+  @ApiProperty()
+  @IsBoolean()
+  isMobileAccessOnly: boolean;
+
+  @IsArray()
+  @IsNotEmpty()
+  @ApiProperty({ required: false })
+  @Transform(({ value }) => { return value; })
+  userRoles: CreateUserRoles[]
+
+  @IsArray()
+  @IsNotEmpty()
+  @ApiProperty({ required: false })
+  @Transform(({ value }) => { return value; })
+  userBusiness: CreateUserBusiness[]
+}
+
+class CreateUserRoles {
+  @IsInt()
+  @IsNotEmpty()
+  @ApiProperty()
+  roleId: number
+}
+
+class CreateUserBusiness {
+  @IsInt()
+  @IsNotEmpty()
+  @ApiProperty()
+  businessId: number
 }

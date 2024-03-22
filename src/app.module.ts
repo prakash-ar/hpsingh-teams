@@ -6,7 +6,6 @@ import { GLOBAL_CONFIG } from './configs/global.config';
 import { LoggerModule } from '@module/Logger/LoggerModule';
 import { LoggerMiddleware } from '@middleware/logger.middleware';
 import { UserModule } from '@module/User/UserModule';
-import { RoleModule } from '@module/Role/RoleModule';
 import { AuthModule } from '@module/Auth/AuthModule';
 import { Role } from '@model/RoleModel';
 import { User } from '@model/UserModel';
@@ -15,6 +14,17 @@ import { RolesGuard } from '@module/Auth/RoleGuard';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from '@module/Auth/AuthGuard';
 import { UserOtp } from '@model/UserOtpModel';
+import { UserBusiness } from '@model/UserBusinessModel';
+import { Business } from '@model/BusinessModel';
+import { RoleModule } from '@module/Role/RoleModule';
+import { BusinessModule } from '@module/Business/BusinessModule';
+import { TokenModule } from '@module/Token/TokenModule';
+import { Token } from '@model/TokenModel';
+import { Audit } from '@model/AuditModel';
+import { AuditLogModule } from '@module/Audit/AuditLogModule';
+import { CustomerModule } from '@module/Customer/CustomerModule';
+import { CustomerOtp } from '@model/CustomerOtpModel';
+import { SmsModule } from './providers/SmsProvider/SmsModule';
 
 
 @Module({
@@ -29,12 +39,17 @@ import { UserOtp } from '@model/UserOtpModel';
       database: process.env.DB_NAME,
       autoLoadModels: true,
       synchronize: true,
-      models: [User, Role, UserRole, UserOtp]
+      models: [User, Role, UserRole, UserOtp, Business, UserBusiness, Token, Audit, CustomerOtp]
     }),
     AuthModule,
     RoleModule,
+    BusinessModule,
     UserModule,
-    LoggerModule
+    TokenModule,
+    CustomerModule,
+    LoggerModule,
+    AuditLogModule,
+    SmsModule
   ],
   providers: [
     {

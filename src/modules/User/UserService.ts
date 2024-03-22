@@ -12,6 +12,7 @@ import { Op } from 'sequelize';
 import { UserOtp } from '@model/UserOtpModel';
 import moment from 'moment';
 import { OtpResponseDto, ValidateOtpDto, ValidateOtpResponseDto } from '@module/Auth/AuthDto';
+import { Business } from '@model/BusinessModel';
 
 @Injectable()
 export class UserService {
@@ -49,7 +50,7 @@ export class UserService {
           { mobile: userName }
         ]
       },
-      include: [Role],
+      include: [Role, Business],
     });
   }
 
@@ -114,7 +115,7 @@ export class UserService {
       where: {
         mobile: reqData.phone
       },
-      include: [UserOtp, Role]
+      include: [UserOtp, Role, { model: Business, attributes: ["id"] }]
     })
 
     if (!user) {
