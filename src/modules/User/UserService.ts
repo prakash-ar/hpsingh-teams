@@ -123,7 +123,7 @@ export class UserService {
     if (!user.isActive) {
       throw new ForbiddenException('User not active, contact admin!');
     }
-    if (user.userOtp.otp === null || (moment(user.userOtp.expireIn).format("YYYY-MM-DD H:mm:ss") < moment().format("YYYY-MM-DD H:mm:ss"))) {
+    if (user.userOtp == null || user.userOtp.otp === null || (moment(user.userOtp.expireIn).format("YYYY-MM-DD H:mm:ss") < moment().format("YYYY-MM-DD H:mm:ss"))) {
       UserOtp.destroy({ where: { userId: user.id } })
       throw new NotAcceptableException('Otp expired!');
     }
