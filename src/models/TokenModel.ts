@@ -29,8 +29,6 @@ export class Token extends Model {
 
   @Column({
     type: BIGINT.UNSIGNED,
-    primaryKey: true,
-    autoIncrement: true,
   })
   businessId: number;
 
