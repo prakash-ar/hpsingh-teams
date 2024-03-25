@@ -27,7 +27,11 @@ export class Token extends Model {
   @Column
   customerPhone: string
 
-  @Column
+  @Column({
+    type: BIGINT.UNSIGNED,
+    primaryKey: true,
+    autoIncrement: true,
+  })
   businessId: number;
 
   @Column
